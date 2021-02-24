@@ -11,3 +11,7 @@ body {
 * {
   box-sizing: border-box;
 }
+
+@import '@arcgis/core/assets/esri/themes/dark/main.css';
+
+@import 'https://api.tiles.mapbox.com/mapbox-gl-js/v2.1.1/mapbox-gl.css'

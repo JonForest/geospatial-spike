@@ -7,13 +7,18 @@
     "build": "next build",
     "start": "next start",
     "copy": "ncp ./node_modules/@arcgis/core/assets ./public/assets",
-    "postinstall": "npm run copy"
+    "postinstall": "npm run copy",
+    "prod": "yarn build && yarn start"
   },
   "dependencies": {
     "@arcgis/core": "^4.18.1",
+    "mapbox-gl": "^2.1.1",
     "next": "10.0.7",
     "react": "17.0.1",
-    "react-dom": "17.0.1"
+    "react-dom": "17.0.1",
+    "remark": "^13.0.0",
+    "remark-html": "^13.0.1",
+    "worker-loader": "^3.0.8"
   },
   "devDependencies": {
     "ncp": "^2.0.0"
