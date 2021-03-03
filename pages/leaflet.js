@@ -4,14 +4,14 @@ import Markdown from "../components/Markdown"
 import { getMarkdown } from "../utils/read_md";
 import Link from 'next/link'
 
-const MapBoxMapNoSSR = dynamic(() => import("../components/MapboxMap"), {
+const MapBoxMapNoSSR = dynamic(() => import("../components/LeafletMap"), {
   ssr: false,
 });
 
 export default function MapboxView({ markdown }) {
   return (
     <>
-      <h1>Mapbox View</h1>
+      <h1>Leaflet View</h1>
       <h2>Notes</h2>
       <MapBoxMapNoSSR />
       <Markdown markdown={markdown} />
@@ -23,6 +23,6 @@ export default function MapboxView({ markdown }) {
 export function getStaticProps(context) {
   
   return {
-    props: { markdown: getMarkdown('mapbox.md') },
+    props: { markdown: getMarkdown('leaflet.md') },
   };
 }

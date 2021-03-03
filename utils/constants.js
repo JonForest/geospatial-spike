@@ -280,6 +280,18 @@ export const geoJSON = {
           ],
         ],
       },
-    }
+    },
+    {
+      properties: {
+        OBJECTID: 4,
+        Country: 'Falkland Islands',
+        y2015: 12.99549456,
+      },
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [176.028787, -37.645967],
+      },
+    },
   ],
 };

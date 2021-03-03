@@ -1,6 +1,6 @@
 // https://github.com/benelan/arcgis-esm-samples
-import { useRef, useEffect, useCallback } from 'react';
-import EsriMap from '@arcgis/core/Map';
+import { useState, useCallback } from 'react';
+import Map from '@arcgis/core/Map';
 import Basemap from '@arcgis/core/Basemap';
 import MapView from '@arcgis/core/views/MapView';
 import BaseTileLayer from '@arcgis/core/layers/BaseTileLayer';
@@ -14,12 +14,13 @@ import { OSM_URL, geoJSON } from '../utils/constants';
 
 export default function ArcGISMap() {
   // const mapRef = useRef(null)
-  console.log('render2');
+  const [map, setMap] = useState(null)
+  const [layers, setLayers] = useState([])
 
   const mapRef = useCallback((node) => {
-    
+    if (!node || map) return
 
-    // Layers
+    // // Layers
     const osmLayer = new BaseTileLayer({
       title: 'Open Street Map',
       urlTemplate: OSM_URL,
@@ -43,33 +44,33 @@ export default function ArcGISMap() {
 
     const graphicsLayer = new GraphicsLayer();
 
-    // Maps
-    // const map = new EsriMap({
-    //   basemap: "topo-vector"
-    // });
-
     const basemap = new Basemap({
       baseLayers: [osmLayer],
       title: 'basemap',
       id: 'basemap',
     });
 
-    const map = new EsriMap({
+    const tempLayers = [vtlLayer, geoJsonLayer, graphicsLayer];
+    setLayers(tempLayers)
+
+    const tempMap = new Map({
       basemap,
-      layers: [vtlLayer, geoJsonLayer],
+      layers: tempLayers,
     });
+    
 
     const view = new MapView({
-      map: map,
+      map: tempMap,
       center: [176.031361, -37.65199],
       zoom: 13, // Zoom level
       container: node,
     });
 
-    // Widgets
+    // // Widgets
     var layerList = new LayerList({
       view: view,
     });
+
 
     const sketch = new Sketch({
       layer: graphicsLayer,
@@ -77,18 +78,32 @@ export default function ArcGISMap() {
       // graphic will be selected as soon as it is created
       creationMode: "update"
     });
-  
-    view.ui.add(layerList, {
-      position: 'top-left',
-    });
+    
+    view.ui.add(sketch, "top-right");
+
+    // Handle this with a button click instead
+    // view.ui.add(layerList, {
+    //   position: 'top-left',
+    // });
 
     view.ui.add(sketch, "top-right");
-  });
-  // }, []);
+
+    setMap(tempMap)
+  }, [map, layers]);
+
+  function toggleAllLayers() {
+    if (!map) return;
+    if (map.layers.length) {
+      map.layers = [];
+    } else {
+      map.layers = layers;
+    }
+  }
 
   return (
     <>
       <div className={styles.mapDiv} id="viewDiv" ref={mapRef}></div>
+      <button onClick={() => toggleAllLayers()}>Toggle layers</button>
     </>
   );
 }
